@@ -1,8 +1,0 @@
-[Desktop Entry]
-Type=Application
-Name=NLauncher Application
-MimeType=x-scheme-handler/fusion360;
-Exec=env WINEPREFIX="/home/nanomed/.autodesk_fusion/wineprefixes/default" wine start %u
-NoDisplay=true
-StartupNotify=true
-Icon=B90A_NLauncher.0
