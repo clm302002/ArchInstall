@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=LivingRoom Camera
+Exec=flatpak run org.videolan.VLC rtsp://admin:Saleen2006@192.168.1.48/live
+Icon=vlc
+Type=Application
+Terminal=false
+Categories=AudioVideo;Player;Recorder;

@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=VIA (Web)
+Exec=chromium --app=https://usevia.app
+Icon=/home/nano/Pictures/viaicon.png
+Type=Application
+Categories=Utility;

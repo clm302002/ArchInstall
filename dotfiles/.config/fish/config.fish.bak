@@ -1,0 +1,6 @@
+set -g fish_greeting
+
+if status is-interactive
+    clear
+    neofetch --source ~/.config/neofetch/archlinux-logo-ascii-art.txt
+end

@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Autodesk Fusion
+MimeType=application/fusion;
+Exec=env WINEPREFIX="/home/nanomed/.autodesk_fusion/wineprefixes/default" wine start /ProgIDOpen f3d_file %f
+NoDisplay=true
+StartupNotify=true
+Icon=E5E6_Fusion360.0

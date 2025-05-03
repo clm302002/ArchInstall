@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Backyard Camera
+Exec=flatpak run org.videolan.VLC rtsp://admin:2brothers@192.168.1.123:554/h264Preview_03_main
+Icon=vlc
+Type=Application
+Terminal=false
+Categories=Video;
