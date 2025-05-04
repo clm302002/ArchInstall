@@ -1,0 +1,8 @@
+code          
+protonup-qt
+python-inputs
+python-steam
+python-vdf
+sddm-sugar-candy-git
+yay
+yay-debug
