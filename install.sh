@@ -20,6 +20,15 @@ echo "[+] Copying home directory files..."
 cp -v home-files/volume-*.sh ~/
 chmod +x ~/volume-*.sh
 
+echo "[+] Making animated-fetch.sh executable..."
+FETCH_SCRIPT="$HOME/.config/neofetch/animated-fetch.sh"
+
+if [[ -f "$FETCH_SCRIPT" ]]; then
+    chmod +x "$FETCH_SCRIPT"
+    echo "✅ $FETCH_SCRIPT is now executable."
+else
+    echo "⚠️  animated-fetch.sh not found at $FETCH_SCRIPT"
+fi
 
 echo "[+] Enabling user services..."
 CACHE_SCRIPT="$HOME/.config/scripts/cache_sink_ids.sh"
