@@ -4,7 +4,7 @@ After=default.target
 Wants=default.target
 
 [Service]
-ExecStart=/bin/bash -c 'sleep 5 && $HOME/.config/scripts/cache_sink_ids.sh'
+ExecStart=/bin/bash -c 'sleep 5 && ~/.config/scripts/cache_sink_ids.sh'
 Type=oneshot
 
 [Install]
