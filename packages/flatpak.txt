@@ -1,1 +1,3 @@
 org.videolan.VLC
+com.bambulab.BambuStudio
+com.spotify.Client
