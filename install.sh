@@ -19,11 +19,26 @@ echo "[+] Copying home directory files..."
 cp -v home-files/volume-*.sh ~/
 chmod +x ~/volume-*.sh
 
+
 echo "[+] Enabling user services..."
-systemctl --user daemon-reexec
-systemctl --user daemon-reload
-systemctl --user enable cache_sink_ids.service
-systemctl --user start cache_sink_ids.service
+CACHE_SCRIPT="$HOME/.config/scripts/cache_sink_ids.sh"
+CACHE_SERVICE="$HOME/.config/systemd/user/cache_sink_ids.service"
+
+if [[ -f "$CACHE_SCRIPT" ]]; then
+    echo "    ↪ Making cache_sink_ids.sh executable..."
+    chmod +x "$CACHE_SCRIPT"
+else
+    echo "    ⚠️  Script not found at $CACHE_SCRIPT"
+fi
+
+if [[ -f "$CACHE_SERVICE" ]]; then
+    systemctl --user daemon-reexec
+    systemctl --user daemon-reload
+    systemctl --user enable cache_sink_ids.service
+    systemctl --user start cache_sink_ids.service
+else
+    echo "    ⚠️  Service file not found at $CACHE_SERVICE"
+fi
 
 # ─────────────────────────────────────────────
 # 🖥️ Optional: Setup Dual Ultrawide Monitors
