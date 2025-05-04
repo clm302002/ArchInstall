@@ -99,7 +99,7 @@ flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flat
 echo "[+] Installing Flatpak packages..."
 while read -r app; do
     flatpak install -y flathub "$app"
-done < packages/flatpak.txt
+done < "$SCRIPT_DIR/packages/flatpak.txt"
 
 # ─────────────────────────────────────────────
 # 🌓  Optional: Apply Breeze Dark Theme
