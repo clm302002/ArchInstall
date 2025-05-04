@@ -7,6 +7,7 @@ LOGFILE=archinstall.log
 exec > >(tee -a "$LOGFILE") 2>&1
 
 echo "========== [ArchInstall Started] =========="
+SCRIPT_DIR="$(cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P)"
 
 echo "[+] Updating system..."
 sudo pacman -Syu --noconfirm
@@ -87,7 +88,7 @@ rm -rf yay
 cd "$(dirname "$0")"
 
 echo "[+] Installing AUR packages..."
-yay -S --needed --noconfirm $(< packages/aur.txt)
+yay -S --needed --noconfirm $(< "$SCRIPT_DIR/packages/aur.txt")
 
 echo "[+] Installing flatpak..."
 sudo pacman -S --needed --noconfirm flatpak
