@@ -52,6 +52,55 @@ systemctl --user enable cache_sink_ids.service
 systemctl --user start cache_sink_ids.service
 
 # ─────────────────────────────────────────────
+# 🌓  Optional: Apply Breeze Dark Theme
+# ─────────────────────────────────────────────
+read -p "🌓  Would you like to apply the Breeze Dark KDE theme? (y/n): " -r
+if [[ "$REPLY" =~ ^[Yy]$ ]]; then
+    echo "🛠️  Installing lookandfeeltool (plasma-workspace)..."
+    sudo pacman -S --needed --noconfirm plasma-workspace
+
+    echo "🎨 Applying Breeze Dark global theme..."
+    if command -v lookandfeeltool &> /dev/null; then
+        lookandfeeltool -a org.kde.breezedark.desktop && echo "✅ Breeze Dark applied."
+    else
+        echo "❌ Failed to apply Breeze Dark: lookandfeeltool not found."
+    fi
+else
+    echo "⏭️  Skipping Breeze Dark theme setup."
+fi
+
+
+# ─────────────────────────────────────────────
+# 🔐  Optional: Setup SDDM Theme + Lock Screen
+# ─────────────────────────────────────────────
+read -p "🔐  Apply Sugar Candy SDDM theme and set lock/login background to arch.jpeg? (y/n): " -r
+if [[ "$REPLY" =~ ^[Yy]$ ]]; then
+    echo "🎨 Installing Sugar Candy SDDM theme..."
+    yay -S --needed --noconfirm sddm-sugar-candy-git
+
+    echo "⚙️  Setting Sugar Candy as default SDDM theme..."
+    sudo mkdir -p /etc/sddm.conf.d
+    sudo tee /etc/sddm.conf.d/10-theme.conf > /dev/null <<EOF
+[Theme]
+Current=sddm-sugar-candy
+EOF
+
+    echo "🖼️  Setting login background to arch.jpeg..."
+    sudo tee /etc/sddm.conf.d/20-background.conf > /dev/null <<EOF
+[General]
+Background=/home/$USER/Pictures/arch.jpeg
+EOF
+
+    echo "🔒 Setting lock screen wallpaper..."
+    mkdir -p ~/.config
+    kwriteconfig5 --file kscreenlockerrc --group Greeter --key Background "/home/$USER/Pictures/arch.jpeg"
+    echo "✅ Lock screen background set to arch.jpeg"
+else
+    echo "⏭️  Skipping SDDM and lock screen setup."
+fi
+
+
+# ─────────────────────────────────────────────
 # 🧪 Optional: Fusion 360 Setup
 # ─────────────────────────────────────────────
 read -p "Would you like to clone the Fusion 360 setup repo? (y/n): " -r
