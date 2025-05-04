@@ -10,7 +10,7 @@ A personal post-install script for quickly restoring my Arch Linux setup with al
 ```bash
 git clone git@github.com:clm302002/ArchInstall.git /mnt/Files/ArchInstall
 cd /mnt/Files/ArchInstall
-
+```
 ################################################################################
 ⚙️ System Setup & Required Software
 📦 Core Packages to Install
@@ -19,18 +19,18 @@ Install these using pacman or yay:
 ```bash
 sudo pacman -S plasma sddm chromium fish neofetch vlc steam steam-native-runtime networkmanager base-devel
 yay -S protonup-qt visual-studio-code-bin wine winetricks
-
+```
 🔁 Enable and Start NetworkManager
 ```bash
 sudo systemctl enable NetworkManager
 sudo systemctl restart NetworkManager
-
+```
 🧩 Flatpak Setup
 
 Install VLC via Flatpak:
 ```bash
 flatpak install flathub org.videolan.VLC
-
+```
 🎮 Gaming Tools
 
     Install Steam (steam, steam-native-runtime)
@@ -51,7 +51,7 @@ flatpak install flathub org.videolan.VLC
 📥 Download Script
 ```bash
 git clone https://github.com/brinkervii/arch-fusion360.git
-
+```
 Repo: https://github.com/brinkervii/arch-fusion360
 🛠️ Fix for Sign-in via Wine
 
@@ -59,9 +59,10 @@ Create a script to override winebrowser:
 ```bash
 #!/bin/bash
 xdg-open "$@"
-
+```
 Then:
 ```bash
 chmod +x ~/.wine/drive_c/windows/winebrowser.bat
 
 (or wherever you override the Wine path)
+```
