@@ -33,16 +33,16 @@ flatpak install flathub org.videolan.VLC
 ```
 🎮 Gaming Tools
 
-Install Steam (steam, steam-native-runtime)
-Install Proton GE via ProtonUp-Qt (yay -S protonup-qt)
-Launch protonup-qt to install the latest GE version
+1. Install Steam (steam, steam-native-runtime)
+2. Install Proton GE via ProtonUp-Qt (yay -S protonup-qt)
+3. Launch protonup-qt to install the latest GE version
 
 🧪 Fusion 360 + Wine Setup
 📦 Requirements
 
-Wine (via wine, winetricks)
-Git (for script download)
-Override winebrowser to use xdg-open
+1. Wine (via wine, winetricks)
+2. Git (for script download)
+3. Override winebrowser to use xdg-open
 
 📥 Download Script
 ```bash
