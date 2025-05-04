@@ -185,15 +185,36 @@ else
 fi
 
 # ─────────────────────────────────────────────
+# ✅ Final Summary Banner
+# ─────────────────────────────────────────────
+echo "🎉🎉🎉"
+echo "==============================================="
+echo "✅ Arch Linux install complete and successful!"
+echo "🔧 System updated via pacman"
+echo "🎨 Dotfiles and scripts installed to user directory"
+echo "🛠️  User services enabled (e.g. cache_sink_ids)"
+echo "🖥️  Optional monitor layout script offered"
+echo "📦 Packages installed from pacman, AUR, and Flatpak"
+echo "🎨 Breeze Dark + Sugar Candy SDDM theme applied"
+echo "🖼️  Login wallpaper set to arch.jpeg"
+echo "💾 Optional disk mounting offered"
+echo "==============================================="
+echo "🎉 You're now ready to start using your system!"
+echo "==============================================="
+echo "🎉🎉🎉"
+
+
+# ─────────────────────────────────────────────
 # 🧪 Optional: Fusion 360 Setup
 # ─────────────────────────────────────────────
-read -p "Would you like to clone the Fusion 360 setup repo? (y/n): " -r
+read -p "🧪 Would you like to install Fusion 360 now? (y/n): " -r
 if [[ "$REPLY" =~ ^[Yy]$ ]]; then
-    echo "[+] Cloning Fusion 360 setup repo..."
-    git clone https://github.com/brinkervii/arch-fusion360.git ~/arch-fusion360
-    echo "[✓] Fusion 360 setup cloned to ~/arch-fusion360"
+    echo "[+] Downloading and running Fusion 360 installer..."
+    curl -L https://raw.githubusercontent.com/cryinkfly/Autodesk-Fusion-360-for-Linux/main/files/setup/autodesk_fusion_installer_x86-64.sh \
+      -o "autodesk_fusion_installer_x86-64.sh"
+    chmod +x autodesk_fusion_installer_x86-64.sh
+    ./autodesk_fusion_installer_x86-64.sh --install --default
+    echo "✅ Fusion 360 installer launched. Follow the prompts!"
 else
-    echo "[!] Skipping Fusion 360 setup."
+    echo "⏭️  Skipping Fusion 360 installation."
 fi
-
-echo "========== [ArchInstall Complete] =========="
