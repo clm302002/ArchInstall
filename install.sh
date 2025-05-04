@@ -141,6 +141,11 @@ EOF
 Background=/home/$USER/Pictures/arch.jpeg
 EOF
 
+    echo "✅ SDDM and login screen background configured."
+else
+    echo "⏭️  Skipping SDDM and login screen setup."
+fi
+
 # ─────────────────────────────────────────────
 # 💾 Optional: Mount Unmounted Disks
 # ─────────────────────────────────────────────
