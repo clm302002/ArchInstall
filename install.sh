@@ -184,24 +184,22 @@ else
     echo "⏭️  Skipping disk mounting."
 fi
 
-# ─────────────────────────────────────────────
-# ✅ Final Summary Banner
-# ─────────────────────────────────────────────
-echo "🎉🎉🎉"
-echo "==============================================="
-echo "✅ Arch Linux install complete and successful!"
-echo "🔧 System updated via pacman"
-echo "🎨 Dotfiles and scripts installed to user directory"
-echo "🛠️  User services enabled (e.g. cache_sink_ids)"
-echo "🖥️  Optional monitor layout script offered"
-echo "📦 Packages installed from pacman, AUR, and Flatpak"
+echo
+echo "╭──────────────────────────────────────────────╮"
+echo "│         ✅ Arch Linux Setup Complete!         │"
+echo "╰──────────────────────────────────────────────╯"
+echo
+echo "📦 System updated and configured"
+echo "📁 Dotfiles and scripts installed"
+echo "🧩 User services (e.g. cache_sink_ids) enabled"
+echo "🖥️  Optional monitor layout offered"
+echo "📦 Pacman, AUR, and Flatpak packages installed"
 echo "🎨 Breeze Dark + Sugar Candy SDDM theme applied"
-echo "🖼️  Login wallpaper set to arch.jpeg"
-echo "💾 Optional disk mounting offered"
-echo "==============================================="
+echo "🖼️  Login screen background set to arch.jpeg"
+echo "💾 Unmounted disk scan and mount offered"
+echo
 echo "🎉 You're now ready to start using your system!"
-echo "==============================================="
-echo "🎉🎉🎉"
+echo
 
 
 # ─────────────────────────────────────────────
