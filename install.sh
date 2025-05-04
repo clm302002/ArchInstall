@@ -142,6 +142,7 @@ Background=/home/$USER/Pictures/arch.jpeg
 EOF
 
     echo "🔒 Setting lock screen wallpaper..."
+    sudo pacman -S --needed --noconfirm kde-cli-tools
     mkdir -p ~/.config
     kwriteconfig5 --file kscreenlockerrc --group Greeter --key Background "/home/$USER/Pictures/arch.jpeg"
     echo "✅ Lock screen background set to arch.jpeg"
