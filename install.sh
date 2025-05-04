@@ -99,6 +99,43 @@ else
     echo "⏭️  Skipping SDDM and lock screen setup."
 fi
 
+# ─────────────────────────────────────────────
+# 💾 Optional: Mount Unmounted Disks
+# ─────────────────────────────────────────────
+read -p "💾  Would you like to mount additional unmounted drives now? (y/n): " -r
+if [[ "$REPLY" =~ ^[Yy]$ ]]; then
+    echo "🔍 Scanning for unmounted partitions..."
+    lsblk -rno NAME,MOUNTPOINT | while read -r name mount; do
+        if [[ -z "$mount" && "$name" != *"zram"* ]]; then
+            device="/dev/$name"
+            suggested_name=$(lsblk -no LABEL "$device" | tr ' ' '_' || echo "$name")
+
+            echo -e "\n📦 Found: $device (No mount point)"
+            read -p "👉  Mount this drive? (y/n): " mount_answer
+            if [[ "$mount_answer" =~ ^[Yy]$ ]]; then
+                read -p "📛  Mount name (default: $suggested_name): " custom_name
+                mount_name="${custom_name:-$suggested_name}"
+                mount_path="/mnt/$mount_name"
+
+                echo "📂 Creating mount point at $mount_path"
+                sudo mkdir -p "$mount_path"
+
+                echo "🔗 Mounting $device to $mount_path..."
+                sudo mount "$device" "$mount_path" && echo "✅ Mounted $device to $mount_path"
+
+                read -p "📝  Add to /etc/fstab for auto-mount at boot? (y/n): " fstab_answer
+                if [[ "$fstab_answer" =~ ^[Yy]$ ]]; then
+                    uuid=$(blkid -s UUID -o value "$device")
+                    fstype=$(blkid -s TYPE -o value "$device")
+                    echo "UUID=$uuid $mount_path $fstype defaults,noatime 0 2" | sudo tee -a /etc/fstab
+                    echo "✅ Added to /etc/fstab"
+                fi
+            fi
+        fi
+    done
+else
+    echo "⏭️  Skipping disk mounting."
+fi
 
 # ─────────────────────────────────────────────
 # 🧪 Optional: Fusion 360 Setup
