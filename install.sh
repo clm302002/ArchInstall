@@ -67,8 +67,23 @@ sudo sed -i 's/^#\s*\(\[multilib\]\)/\1/' /etc/pacman.conf
 sudo sed -i '/\[multilib\]/,/Include/s/^#//' /etc/pacman.conf
 sudo pacman -Sy
 
-echo "[+] Installing yay (AUR helper)..."
-sudo pacman -S --needed --noconfirm yay
+# ─────────────────────────────────────────────
+# 📦 Installing Yay (AUR Helper)
+# ─────────────────────────────────────────────
+echo "[+] Installing prerequisites for AUR builds..."
+sudo pacman -S --needed --noconfirm base-devel git
+
+echo "[+] Cloning yay from AUR..."
+cd ~
+rm -rf yay
+git clone https://aur.archlinux.org/yay.git || { echo "[!] Failed to clone yay"; exit 1; }
+
+echo "[+] Building and installing yay..."
+cd yay
+makepkg -si --noconfirm || { echo "[!] Failed to build yay"; exit 1; }
+
+cd ..
+rm -rf yay
 
 echo "[+] Installing AUR packages..."
 yay -S --needed --noconfirm $(< packages/aur.txt)
