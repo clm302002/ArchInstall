@@ -84,6 +84,7 @@ makepkg -si --noconfirm || { echo "[!] Failed to build yay"; exit 1; }
 
 cd ..
 rm -rf yay
+cd "$(dirname "$0")"
 
 echo "[+] Installing AUR packages..."
 yay -S --needed --noconfirm $(< packages/aur.txt)
