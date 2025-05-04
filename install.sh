@@ -11,6 +11,38 @@ echo "========== [ArchInstall Started] =========="
 echo "[+] Updating system..."
 sudo pacman -Syu --noconfirm
 
+echo "[+] Copying dotfiles..."
+cp -rv dotfiles/.config ~/
+cp -rv dotfiles/.local ~/
+
+echo "[+] Copying home directory files..."
+cp -v home-files/volume-*.sh ~/
+chmod +x ~/volume-*.sh
+
+echo "[+] Enabling user services..."
+systemctl --user daemon-reexec
+systemctl --user daemon-reload
+systemctl --user enable cache_sink_ids.service
+systemctl --user start cache_sink_ids.service
+
+# ─────────────────────────────────────────────
+# 🖥️ Optional: Setup Dual Ultrawide Monitors
+# ─────────────────────────────────────────────
+read -p "🖥️  Apply Nano's dual ultrawide monitor layout? (y/n): " -r
+if [[ "$REPLY" =~ ^[Yy]$ ]]; then
+    if [[ -f scripts/setup-monitors.sh ]]; then
+        echo "🖥️  Applying saved monitor layout..."
+        bash scripts/setup-monitors.sh && echo "✅ Monitor layout applied."
+    else
+        echo "❌ Monitor layout script not found."
+    fi
+else
+    echo "⏭️  Skipping monitor layout setup."
+fi
+
+# ─────────────────────────────────────────────
+# 📦 Installing System Packages
+# ─────────────────────────────────────────────
 echo "[+] Installing pacman packages..."
 sudo pacman -S --needed --noconfirm $(< packages/pacman.txt)
 
@@ -36,20 +68,6 @@ echo "[+] Installing Flatpak packages..."
 while read -r app; do
     flatpak install -y flathub "$app"
 done < packages/flatpak.txt
-
-echo "[+] Copying dotfiles..."
-cp -rv dotfiles/.config ~/
-cp -rv dotfiles/.local ~/
-
-echo "[+] Copying home directory files..."
-cp -v home-files/volume-*.sh ~/
-chmod +x ~/volume-*.sh
-
-echo "[+] Enabling user services..."
-systemctl --user daemon-reexec
-systemctl --user daemon-reload
-systemctl --user enable cache_sink_ids.service
-systemctl --user start cache_sink_ids.service
 
 # ─────────────────────────────────────────────
 # 🌓  Optional: Apply Breeze Dark Theme
