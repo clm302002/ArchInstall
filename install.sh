@@ -6,23 +6,34 @@ set -euxo pipefail
 LOGFILE=archinstall.log
 exec > >(tee -a "$LOGFILE") 2>&1
 
+# ╭────────────────────────────────────────────────────────────╮
+# │              🚀 Starting Arch Linux Setup Script            │
+# ╰────────────────────────────────────────────────────────────╯
 echo "========== [ArchInstall Started] =========="
 SCRIPT_DIR="$(cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P)"
 
+# ─────────────────────────────────────────────
+# 🔄 Update System
+# ─────────────────────────────────────────────
 echo "[+] Updating system..."
 sudo pacman -Syu --noconfirm
 
+# ─────────────────────────────────────────────
+# 📁 Copy Dotfiles and Home Scripts
+# ─────────────────────────────────────────────
 echo "[+] Copying dotfiles..."
 cp -rv dotfiles/.config ~/
-cp -rv dotfiles/.local ~/
+cp -rv dotfiles/.local ~/ 
 
 echo "[+] Copying home directory files..."
 cp -v home-files/volume-*.sh ~/
 chmod +x ~/volume-*.sh
 
+# ─────────────────────────────────────────────
+# 🎨 Setup Neofetch Animation
+# ─────────────────────────────────────────────
 echo "[+] Making animated-fetch.sh executable..."
 FETCH_SCRIPT="$HOME/.config/neofetch/animated-fetch.sh"
-
 if [[ -f "$FETCH_SCRIPT" ]]; then
     chmod +x "$FETCH_SCRIPT"
     echo "✅ $FETCH_SCRIPT is now executable."
@@ -30,6 +41,9 @@ else
     echo "⚠️  animated-fetch.sh not found at $FETCH_SCRIPT"
 fi
 
+# ─────────────────────────────────────────────
+# 🧩 Enable User Services
+# ─────────────────────────────────────────────
 echo "[+] Enabling user services..."
 CACHE_SCRIPT="$HOME/.config/scripts/cache_sink_ids.sh"
 CACHE_SERVICE="$HOME/.config/systemd/user/cache_sink_ids.service"
@@ -51,7 +65,7 @@ else
 fi
 
 # ─────────────────────────────────────────────
-# 🖥️ Optional: Setup Dual Ultrawide Monitors
+# 🖥️ Monitor Layout (Optional)
 # ─────────────────────────────────────────────
 read -p "🖥️  Apply Nano's dual ultrawide monitor layout? (y/n): " -r
 if [[ "$REPLY" =~ ^[Yy]$ ]]; then
@@ -66,7 +80,7 @@ else
 fi
 
 # ─────────────────────────────────────────────
-# 📦 Installing System Packages
+# 📦 Pacman & AUR Packages
 # ─────────────────────────────────────────────
 echo "[+] Installing pacman packages..."
 sudo pacman -S --needed --noconfirm $(< packages/pacman.txt)
@@ -78,7 +92,7 @@ sudo sed -i '/\[multilib\]/,/Include/s/^#//' /etc/pacman.conf
 sudo pacman -Sy
 
 # ─────────────────────────────────────────────
-# 📦 Installing Yay (AUR Helper)
+# 🔧 Install Yay
 # ─────────────────────────────────────────────
 echo "[+] Installing prerequisites for AUR builds..."
 sudo pacman -S --needed --noconfirm base-devel git
@@ -91,14 +105,14 @@ git clone https://aur.archlinux.org/yay.git || { echo "[!] Failed to clone yay";
 echo "[+] Building and installing yay..."
 cd yay
 makepkg -si --noconfirm || { echo "[!] Failed to build yay"; exit 1; }
-
-cd ..
-rm -rf yay
-cd "$(dirname "$0")"
+cd .. && rm -rf yay && cd "$SCRIPT_DIR"
 
 echo "[+] Installing AUR packages..."
 yay -S --needed --noconfirm $(< "$SCRIPT_DIR/packages/aur.txt")
 
+# ─────────────────────────────────────────────
+# 📦 Flatpak Setup
+# ─────────────────────────────────────────────
 echo "[+] Installing flatpak..."
 sudo pacman -S --needed --noconfirm flatpak
 
@@ -111,9 +125,9 @@ while read -r app; do
 done < "$SCRIPT_DIR/packages/flatpak.txt"
 
 # ─────────────────────────────────────────────
-# 🌓  Optional: Apply Breeze Dark Theme
+# 🌗 Breeze Dark Theme (Optional)
 # ─────────────────────────────────────────────
-read -p "🌓  Would you like to apply the Breeze Dark KDE theme? (y/n): " -r
+read -p "🌗  Would you like to apply the Breeze Dark KDE theme? (y/n): " -r
 if [[ "$REPLY" =~ ^[Yy]$ ]]; then
     echo "🛠️  Installing lookandfeeltool (plasma-workspace)..."
     sudo pacman -S --needed --noconfirm plasma-workspace
@@ -128,9 +142,8 @@ else
     echo "⏭️  Skipping Breeze Dark theme setup."
 fi
 
-
 # ─────────────────────────────────────────────
-# 🔐  Optional: Setup SDDM Theme + Lock Screen
+# 🔐 SDDM + Lock Screen Theme
 # ─────────────────────────────────────────────
 read -p "🔐  Apply Sugar Candy SDDM theme and set lock/login background to arch.jpeg? (y/n): " -r
 if [[ "$REPLY" =~ ^[Yy]$ ]]; then
@@ -183,9 +196,8 @@ else
     echo "⏭️  Skipping SDDM and login screen setup."
 fi
 
-
 # ─────────────────────────────────────────────
-# 💾 Optional: Mount Unmounted Disks
+# 💾 Mount Extra Drives (Optional)
 # ─────────────────────────────────────────────
 read -p "💾  Would you like to mount additional unmounted drives now? (y/n): " -r
 if [[ "$REPLY" =~ ^[Yy]$ ]]; then
@@ -222,26 +234,25 @@ else
     echo "⏭️  Skipping disk mounting."
 fi
 
+# ╭────────────────────────────────────────────────────────────╮
+# │ ✅ Arch Linux Setup Complete — System Ready to Use!        │
+# ╰────────────────────────────────────────────────────────────╯
 echo
-echo "╭──────────────────────────────────────────────╮"
-echo "│         ✅ Arch Linux Setup Complete!         │"
-echo "╰──────────────────────────────────────────────╯"
-echo
-echo "📦 System updated and configured"
-echo "📁 Dotfiles and scripts installed"
-echo "🧩 User services (e.g. cache_sink_ids) enabled"
-echo "🖥️  Optional monitor layout offered"
-echo "📦 Pacman, AUR, and Flatpak packages installed"
-echo "🎨 Breeze Dark + Sugar Candy SDDM theme applied"
-echo "🖼️  Login screen background set to arch.jpeg"
-echo "💾 Unmounted disk scan and mount offered"
-echo
-echo "🎉 You're now ready to start using your system!"
-echo
+cat <<EOF
+📦 System updated and configured
+📁 Dotfiles and scripts installed
+🧩 User services (e.g. cache_sink_ids) enabled
+🖥️  Optional monitor layout offered
+📦 Pacman, AUR, and Flatpak packages installed
+🎨 Breeze Dark + Sugar Candy SDDM theme applied
+🖼️  Login + lock screen background set to arch.jpeg
+💾 Unmounted disk scan and mount offered
 
+🎉 You're now ready to start using your system!
+EOF
 
 # ─────────────────────────────────────────────
-# 🧪 Optional: Fusion 360 Setup
+# 🧪 Fusion 360 Setup (Optional)
 # ─────────────────────────────────────────────
 read -p "🧪 Would you like to install Fusion 360 now? (y/n): " -r
 if [[ "$REPLY" =~ ^[Yy]$ ]]; then
