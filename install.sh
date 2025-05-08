@@ -135,7 +135,10 @@ fi
 read -p "🔐  Apply Sugar Candy SDDM theme and set lock/login background to arch.jpeg? (y/n): " -r
 if [[ "$REPLY" =~ ^[Yy]$ ]]; then
     echo "🎨 Installing Sugar Candy SDDM theme..."
-    yay -S --needed --noconfirm sddm-sugar-candy-git
+    yay -S --needed --noconfirm sddm-sugar-candy-git || {
+        echo "❌ Failed to install Sugar Candy theme. Skipping..."
+        sleep 3
+    }
 
     echo "⚙️  Setting Sugar Candy as default SDDM theme..."
     sudo mkdir -p /etc/sddm.conf.d
@@ -150,10 +153,36 @@ EOF
 Background=/home/$USER/Pictures/arch.jpeg
 EOF
 
-    echo "✅ SDDM and login screen background configured."
+    echo "🔒 Setting lock screen background..."
+    LOCK_CONF="$HOME/.config/kscreenlockerrc"
+    LOCK_IMG="/home/$USER/Pictures/arch.jpeg"
+
+    if [[ ! -f "$LOCK_CONF" ]]; then
+        echo "⚠️  Lock screen config not found, creating it..."
+        mkdir -p "$(dirname "$LOCK_CONF")"
+        touch "$LOCK_CONF"
+    fi
+
+    if [[ -f "$LOCK_IMG" ]]; then
+        kwriteconfig5 --file "$LOCK_CONF" \
+                      --group "Greeter" --group "Wallpaper" \
+                      --group "org.kde.image" --group "General" \
+                      --key Image "$LOCK_IMG"
+        kwriteconfig5 --file "$LOCK_CONF" \
+                      --group "Greeter" --group "Wallpaper" \
+                      --group "org.kde.image" --group "General" \
+                      --key PreviewImage "$LOCK_IMG"
+        echo "✅ Lock screen wallpaper set."
+    else
+        echo "❌ Lock screen image not found at $LOCK_IMG. Skipping lock screen setup."
+        sleep 3
+    fi
+
+    echo "✅ SDDM and lock screen background configured."
 else
     echo "⏭️  Skipping SDDM and login screen setup."
 fi
+
 
 # ─────────────────────────────────────────────
 # 💾 Optional: Mount Unmounted Disks
